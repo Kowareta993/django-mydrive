@@ -1,0 +1,23 @@
+{% extends "form.html" %}
+{% block title %}
+    Rename
+    {% if is_file %}
+        File
+    {% else %}
+        Folder
+    {% endif %}
+    - MyDrive
+{% endblock title %}
+{% block header %}
+    Rename a
+    {% if is_file %}
+        File
+    {% else %}
+        Folder
+    {% endif %}
+{% endblock header %}
+{% block actions %}
+    <button type="submit" class="btn btn-primary">Rename</button>
+    <a href="{% if parent_id %} {% url 'ui:folder' pk=parent_id %} {% else %} {% url 'ui:index' %} {% endif %}"
+       class="btn btn-secondary">Cancel</a>
+{% endblock actions %}

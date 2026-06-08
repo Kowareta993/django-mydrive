@@ -1,0 +1,12 @@
+{% extends "form.html" %}
+{% block title %}
+    Create Folder - MyDrive
+{% endblock title %}
+{% block header %}
+    Create a Folder
+{% endblock header %}
+{% block actions %}
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a href="{% if parent_id %} {% url 'ui:folder' pk=parent_id %} {% else %} {% url 'ui:index' %} {% endif %}"
+       class="btn btn-secondary">Cancel</a>
+{% endblock actions %}

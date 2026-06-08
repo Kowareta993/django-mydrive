@@ -1,0 +1,82 @@
+{% extends "form.html" %}
+{% block title %}
+    Upload File - MyDrive
+{% endblock title %}
+{% block header %}
+    Upload a File
+{% endblock header %}
+{% block form_attrs %}
+    id="file-upload-form" enctype="multipart/form-data"
+{% endblock form_attrs %}
+{% block actions %}
+    <button type="submit" class="btn btn-primary">Upload</button>
+    <a href="{% if parent_id %} {% url 'ui:folder' pk=parent_id %} {% else %} {% url 'ui:index' %} {% endif %}"
+       class="btn btn-secondary">Cancel</a>
+{% endblock actions %}
+{% block footer %}
+    <div class="mt-4" id="progress-container" style="display: none;">
+        <h5>Upload Progress</h5>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated"
+                 id="upload-progress"
+                 role="progressbar"
+                 style="width: 0%"
+                 aria-valuenow="0"
+                 aria-valuemin="0"
+                 aria-valuemax="100"></div>
+        </div>
+        <p id="upload-status" class="mt-2"></p>
+    </div>
+{% endblock footer %}
+{% block script %}
+    <script>
+    document.getElementById('file-upload-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        console.log(11)
+        const form = e.target;
+        const formData = new FormData(form);
+        const progressContainer = document.getElementById('progress-container');
+        const progressBar = document.getElementById('upload-progress');
+        const statusText = document.getElementById('upload-status');
+
+        progressContainer.style.display = 'block';
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', form.action, true);
+
+        xhr.upload.addEventListener('progress', function(e) {
+            if (e.lengthComputable) {
+                const percentComplete = Math.round((e.loaded / e.total) * 100);
+                progressBar.style.width = percentComplete + '%';
+                progressBar.setAttribute('aria-valuenow', percentComplete);
+            }
+        });
+
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                const response = JSON.parse(xhr.responseText);
+                if (response.success) {
+                    statusText.textContent = 'File uploaded successfully!';
+                    statusText.classList.add('text-success');
+                    setTimeout(function() {
+                        window.location.href = "{% if parent_id %}{% url 'ui:folder' pk=parent_id %}{% else %}{% url 'ui:index' %}{% endif %}";
+                    }, 1000);  
+                } else {
+                    statusText.textContent = 'File upload failed: ' + (response.errors || 'Unknown error.');
+                    statusText.classList.add('text-danger');
+                }
+            } else {
+                statusText.textContent = 'File upload failed with status ' + xhr.status;
+                statusText.classList.add('text-danger');
+            }
+        };
+
+        xhr.onerror = function() {
+            statusText.textContent = 'An error occurred during the upload.';
+            statusText.classList.add('text-danger');
+        };
+
+        xhr.send(formData);
+    });
+    </script>
+{% endblock script %}

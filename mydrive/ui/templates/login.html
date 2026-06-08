@@ -1,0 +1,15 @@
+{% extends "form.html" %}
+{% block title %}
+    Login - MyDrive
+{% endblock title %}
+{% block header %}
+    Login
+{% endblock header %}
+{% block actions %}
+    <button type="submit" class="btn btn-primary">Login</button>
+{% endblock actions %}
+{% block footer %}
+    <div class="mt-3">
+        <a href="{% url 'ui:register' %}">Don't have an account? Register here.</a>
+    </div>
+{% endblock footer %}
