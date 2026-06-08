@@ -1,16 +1,16 @@
 from pathlib import Path
 from environs import Env
 
-env = Env() # new
-env.read_env() 
+env = Env()
+env.read_env()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
 SECRET_KEY = env("DJANGO_SECRET_KEY")
-DEBUG = False
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+DEBUG = env.bool("DJANGO_DEBUG", default=False)
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 
 # Application definition
@@ -149,14 +149,30 @@ API_BASE_URL = "http://127.0.0.1:8000/api"
 
 
 ACCOUNT_EMAIL_VERIFICATION = "none"  # Options: "mandatory", "optional", "none"
-ACCOUNT_EMAIL_REQUIRED = False
+# ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_SIGNUP_FIELDS = ["username*", "password1*"]
 
 from django.contrib.messages import constants as messages
 
 MESSAGE_TAGS = {
-    messages.DEBUG: 'secondary',
-    messages.INFO: 'info',
-    messages.SUCCESS: 'success',
-    messages.WARNING: 'warning',
-    messages.ERROR: 'danger',
+    messages.DEBUG: "secondary",
+    messages.INFO: "info",
+    messages.SUCCESS: "success",
+    messages.WARNING: "warning",
+    messages.ERROR: "danger",
 }
+
+if DEBUG:
+    SECURE_SSL_REDIRECT = False
+    SECURE_HSTS_SECONDS = 0
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+else:
+    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = 2592000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
