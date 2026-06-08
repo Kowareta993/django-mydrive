@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = os.getenv("DJANGO_DEBUG", default=False)
 
-ALLOWED_HOSTS = [".darkube.ir", "localhost", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = ["mydrive.darkube.ir", "mydrive.darkube.app", "localhost", "127.0.0.1", "0.0.0.0"]
 
 
 # Application definition
@@ -177,3 +177,5 @@ else:
     SECURE_HSTS_PRELOAD = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
