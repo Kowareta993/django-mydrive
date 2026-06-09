@@ -20,19 +20,22 @@ def login_view(request):
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
-            response = APIClient.post(
-                "/auth/login",
-                data={
-                    "username": form.cleaned_data.get("username"),
-                    "password": form.cleaned_data.get("password"),
-                },
-            )
-            if response.status_code == 200:
-                token = response.json().get("key")
-                set_token(request, token)
-                return redirect("ui:index")
-            else:
-                messages.error(request, "Invalid username or password")
+            try:
+                response = APIClient.post(
+                    "/auth/login",
+                    data={
+                        "username": form.cleaned_data.get("username"),
+                        "password": form.cleaned_data.get("password"),
+                    },
+                )
+                if response.status_code == 200:
+                    token = response.json().get("key")
+                    set_token(request, token)
+                    return redirect("ui:index")
+                else:
+                    messages.error(request, "Invalid username or password")
+            except:
+                messages.error(request, "Error in sending request")
 
     return render(
         request,
@@ -46,23 +49,26 @@ def register_view(request):
     if request.method == "POST":
         form = RegisterForm(request.POST)
         if form.is_valid():
-            response = APIClient.post(
-                "/auth/register/",
-                data={
-                    "username": form.cleaned_data.get("username"),
-                    "email": form.cleaned_data.get("email"),
-                    "password1": form.cleaned_data.get("password"),
-                    "password2": form.cleaned_data.get("confirm_password"),
-                },
-            )
-            if response.status_code == 201:
-                messages.success(request, "Registration successful")
-                return redirect("ui:login")
-            else:
-                messages.error(
-                    request,
-                    response.text,
+            try:
+                response = APIClient.post(
+                    "/auth/register/",
+                    data={
+                        "username": form.cleaned_data.get("username"),
+                        "email": form.cleaned_data.get("email"),
+                        "password1": form.cleaned_data.get("password"),
+                        "password2": form.cleaned_data.get("confirm_password"),
+                    },
                 )
+                if response.status_code == 201:
+                    messages.success(request, "Registration successful")
+                    return redirect("ui:login")
+                else:
+                    messages.error(
+                        request,
+                        response.text,
+                    )
+            except:
+                messages.error(request, "Error in sending request")
 
     return render(
         request,
@@ -73,13 +79,16 @@ def register_view(request):
 
 @user_required
 def logout_view(request):
-    APIClient.post(
-        "/auth/logout/",
-        token=get_token(request),
-    )
-    set_token(request, "")
-    messages.success(request, "You have been logged out.")
-    return redirect("ui:login")
+    try:
+        APIClient.post(
+            "/auth/logout/",
+            token=get_token(request),
+        )
+        set_token(request, "")
+        messages.success(request, "You have been logged out.")
+        return redirect("ui:login")
+    except:
+        messages.error(request, "Error in sending request")
 
 
 @user_required
@@ -91,10 +100,7 @@ def drive_view(request, pk=None):
     page = int(request.GET.get("page", 1))
     if (
         pk
-        and APIClient.get(
-            f"/folders/{pk}", token=get_token(request)
-        ).status_code
-        != 200
+        and APIClient.get(f"/folders/{pk}", token=get_token(request)).status_code != 200
     ):
         return HttpResponseNotFound("Not Found!")
     folders = APIClient.get(

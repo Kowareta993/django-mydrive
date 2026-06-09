@@ -2,7 +2,6 @@ from django.conf import settings
 import requests
 from requests.exceptions import RequestException, Timeout, ConnectionError
 
-
 class APIClient:
 
     # Default timeout in seconds
@@ -11,6 +10,7 @@ class APIClient:
     @staticmethod
     def post(endpoint, data=None, files=None, token=None, timeout=None):
         url = f"{settings.API_BASE_URL}{endpoint}"
+        print(url)
         timeout = timeout if timeout is not None else APIClient.DEFAULT_TIMEOUT
         try:
             return requests.post(

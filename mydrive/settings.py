@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
 DEBUG = os.getenv("DJANGO_DEBUG", default=False)
 
-ALLOWED_HOSTS = ["mydrive.darkube.ir", "mydrive.darkube.app", "localhost", "127.0.0.1", "0.0.0.0"]
+ALLOWED_HOSTS = ["mydrive.darkube.ir", "mydrive.darkube.app", "localhost", "127.0.0.1", "0.0.0.0", "web"]
 
 
 # Application definition
@@ -151,7 +151,7 @@ SITE_ID = 1
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-API_BASE_URL = "http://127.0.0.1:8000/api"
+API_BASE_URL = "https://mydrive.darkube.ir/api"
 
 
 ACCOUNT_EMAIL_VERIFICATION = "none"  # Options: "mandatory", "optional", "none"
