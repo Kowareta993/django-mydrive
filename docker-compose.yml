@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    command: python /code/manage.py runserver
+    command: gunicorn --bind 0.0.0.0:8000 mydrive.wsgi:application
     volumes:
       - .:/code
     ports:
