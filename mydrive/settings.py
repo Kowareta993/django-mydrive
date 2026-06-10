@@ -184,3 +184,7 @@ else:
     CSRF_COOKIE_SECURE = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://mydrive.darkube.ir",
+    "https://mydrive.darkube.app",
+]
