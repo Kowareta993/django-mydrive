@@ -5,7 +5,7 @@ from requests.exceptions import RequestException, Timeout, ConnectionError
 class APIClient:
 
     # Default timeout in seconds
-    DEFAULT_TIMEOUT = 10
+    DEFAULT_TIMEOUT = 30
 
     @staticmethod
     def post(endpoint, data=None, files=None, token=None, timeout=None):
