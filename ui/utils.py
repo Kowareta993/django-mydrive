@@ -9,8 +9,7 @@ class APIClient:
 
     @staticmethod
     def post(endpoint, data=None, files=None, token=None, timeout=None):
-        url = f"{settings.API_BASE_URL}{endpoint}"
-        print(url)
+        url = f"{settings.API_BASE_URL}{endpoint}"        
         timeout = timeout if timeout is not None else APIClient.DEFAULT_TIMEOUT
         try:
             return requests.post(

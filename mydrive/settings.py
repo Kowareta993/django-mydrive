@@ -151,7 +151,7 @@ SITE_ID = 1
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-API_BASE_URL = "https://mydrive.darkube.ir/api"
+API_BASE_URL = os.getenv("API_URL", "http://localhost:8000/api")
 
 
 ACCOUNT_EMAIL_VERIFICATION = "none"  # Options: "mandatory", "optional", "none"
